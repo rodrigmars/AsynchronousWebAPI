@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using WorldMusic.Domain.Interfaces.Repositories;
@@ -68,26 +69,26 @@ namespace WorldMusic.Infra.Dapper.Repositories
             });
         }
 
-        public bool Add(string query, object param)
+        public bool Add(string query, object param, CommandType command = CommandType.Text)
         {
             return _context.Connection(conn =>
             {
                 using (var c = conn)
                 {
-                    return (c.Execute(query, param) > 0);
+                    return (c.Execute(query, param, commandType: command) > 0);
                 }
             });
         }
 
-        public IEnumerable<TEntity> GetAll(string query)
+        public IEnumerable<TEntity> GetAll(string query, CommandType command = CommandType.Text)
         {
             return _context.Connection(conn =>
             {
-                using (var c = conn) return c.Query<TEntity>(query);
+                using (var c = conn) return c.Query<TEntity>(query, commandType: command);
             });
         }
 
-        public TEntity GetById(string query, dynamic param)
+        public TEntity GetById(string query, dynamic param, CommandType command = CommandType.Text)
         {
             return _context.Connection(conn =>
             {
@@ -98,24 +99,24 @@ namespace WorldMusic.Infra.Dapper.Repositories
             });
         }
 
-        public bool Update(string query, object param)
+        public bool Update(string query, object param, CommandType command = CommandType.Text)
         {
             return _context.Connection(conn =>
             {
                 using (var c = conn)
                 {
-                    return (c.Execute(query, param) > 0);
+                    return (c.Execute(query, param, commandType: command) > 0);
                 }
             });
         }
 
-        public bool Remove(string query, object param)
+        public bool Remove(string query, object param, CommandType command = CommandType.Text)
         {
             return _context.Connection(conn =>
             {
                 using (var c = conn)
                 {
-                    return (c.Execute(query, param) > 0);
+                    return (c.Execute(query, param, commandType: command) > 0);
                 }
             });
         }

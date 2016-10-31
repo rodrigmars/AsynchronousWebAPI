@@ -1,4 +1,6 @@
-﻿namespace WorldMusic.Domain.Entities
+﻿using System;
+
+namespace WorldMusic.Domain.Entities
 {
     public class Music
     {
@@ -7,5 +9,6 @@
         public int Track { get; set; }
         public bool IsActive { get; set; }
         public int IDProcess { get; set; }
+        public DateTime TimeStamp { get; set; }
     }
 }

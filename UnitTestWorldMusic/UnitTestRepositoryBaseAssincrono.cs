@@ -26,8 +26,8 @@ namespace UnitTestWorldMusic
             container.Verify();
         }
 
-        //[Ignore]
-        [TestMethod]
+        [Ignore]
+        //[TestMethod]
         public void TestInsere()
         {
             for (int i = 0; i < 10; i++)
