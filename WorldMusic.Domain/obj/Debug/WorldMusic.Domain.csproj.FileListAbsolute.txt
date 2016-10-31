@@ -1,0 +1,4 @@
+F:\Laboratorio\WorldMusic\WorldMusic.Domain\bin\Debug\WorldMusic.Domain.dll
+F:\Laboratorio\WorldMusic\WorldMusic.Domain\bin\Debug\WorldMusic.Domain.pdb
+F:\Laboratorio\WorldMusic\WorldMusic.Domain\obj\Debug\WorldMusic.Domain.dll
+F:\Laboratorio\WorldMusic\WorldMusic.Domain\obj\Debug\WorldMusic.Domain.pdb

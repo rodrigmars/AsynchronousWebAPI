@@ -1,0 +1,9 @@
+F:\Laboratorio\WorldMusic\WorldMusic.Infra.Dapper\bin\Debug\WorldMusic.Infra.Dapper.dll
+F:\Laboratorio\WorldMusic\WorldMusic.Infra.Dapper\bin\Debug\WorldMusic.Infra.Dapper.pdb
+F:\Laboratorio\WorldMusic\WorldMusic.Infra.Dapper\bin\Debug\Dapper.dll
+F:\Laboratorio\WorldMusic\WorldMusic.Infra.Dapper\bin\Debug\WorldMusic.Domain.dll
+F:\Laboratorio\WorldMusic\WorldMusic.Infra.Dapper\bin\Debug\WorldMusic.Domain.pdb
+F:\Laboratorio\WorldMusic\WorldMusic.Infra.Dapper\bin\Debug\Dapper.xml
+F:\Laboratorio\WorldMusic\WorldMusic.Infra.Dapper\obj\Debug\WorldMusic.Infra.Dapper.csprojResolveAssemblyReference.cache
+F:\Laboratorio\WorldMusic\WorldMusic.Infra.Dapper\obj\Debug\WorldMusic.Infra.Dapper.dll
+F:\Laboratorio\WorldMusic\WorldMusic.Infra.Dapper\obj\Debug\WorldMusic.Infra.Dapper.pdb
