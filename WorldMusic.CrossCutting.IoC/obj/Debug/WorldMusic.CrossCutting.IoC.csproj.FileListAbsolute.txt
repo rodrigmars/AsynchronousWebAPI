@@ -1,3 +1,4 @@
+F:\Laboratorio\WorldMusic\WorldMusic.CrossCutting.IoC\bin\Debug\WorldMusic.CrossCutting.IoC.dll.config
 F:\Laboratorio\WorldMusic\WorldMusic.CrossCutting.IoC\bin\Debug\WorldMusic.CrossCutting.IoC.dll
 F:\Laboratorio\WorldMusic\WorldMusic.CrossCutting.IoC\bin\Debug\WorldMusic.CrossCutting.IoC.pdb
 F:\Laboratorio\WorldMusic\WorldMusic.CrossCutting.IoC\bin\Debug\SimpleInjector.dll

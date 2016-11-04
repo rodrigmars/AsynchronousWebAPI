@@ -40,8 +40,10 @@
     <Compile Include="Entities\Discography.cs" />
     <Compile Include="Entities\Music.cs" />
     <Compile Include="Entities\Store.cs" />
+    <Compile Include="Interfaces\Repositories\IMusicRepository.cs" />
     <Compile Include="Interfaces\Repositories\IRepositoryBase.cs" />
     <Compile Include="Interfaces\Repositories\IStoreRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

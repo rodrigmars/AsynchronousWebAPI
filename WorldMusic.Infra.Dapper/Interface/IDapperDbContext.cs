@@ -9,5 +9,7 @@ namespace WorldMusic.Infra.Dapper.Interface
         Task<T> ConnectionAsync<T>(Func<IDbConnection, Task<T>> getData);
 
         T Connection<T>(Func<IDbConnection, T> getData);
+
+        IDbConnection ConnectionTransaction { get; }
     }
 }
