@@ -15,9 +15,6 @@ namespace UnitTestWorldMusic
     [TestClass]
     public class UnitTestUnitOfWork
     {
-        //http://www.kspace.pt/posts/UnitOfWork
-        //https://robinsedlaczek.com/2014/05/20/improve-server-performance-with-asynchronous-webapi/
-        //https://www.asp.net/web-api/overview/advanced/calling-a-web-api-from-a-net-client
         Container container { get; set; }
         string connectionString { get { return ConfigurationManager.ConnectionStrings["TestWorldMusicConnection"].ConnectionString; } }
 
