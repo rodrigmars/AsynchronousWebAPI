@@ -4,7 +4,7 @@ using System.Data;
 
 namespace WorldMusic.Domain.Interfaces.Repositories
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork: IDisposable
     {
         void BeginTransaction();
 

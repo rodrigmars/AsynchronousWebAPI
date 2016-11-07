@@ -76,6 +76,7 @@
     <Compile Include="Repositories\MusicRepository.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Repositories\StoreRepository.cs" />
+    <Compile Include="UOW\UnitOfWorkGeneric.cs" />
     <Compile Include="UOW\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>

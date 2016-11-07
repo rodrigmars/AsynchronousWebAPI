@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 
@@ -26,4 +27,5 @@ namespace WorldMusic.Domain.Interfaces.Repositories
 
         bool Remove(string query, object param, CommandType command = CommandType.Text);
     }
+
 }

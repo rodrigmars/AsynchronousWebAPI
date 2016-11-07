@@ -1,27 +1,33 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.Http;
 using WorldMusic.Domain.Entities;
 using WorldMusic.Domain.Interfaces.Repositories;
 
 namespace WorldMusic.Api.V1.Controller
 {
-    [RoutePrefix("api/v{version:int}/musics")]
+    [RoutePrefix("api/v1/musics")]
     public class MusicsController : ApiController
     {
         private readonly IMusicRepository _repository;
 
-        public MusicsController(IMusicRepository repository)
+        private readonly IUnitOfWorkGeneric _uow;
+
+        public MusicsController(IUnitOfWorkGeneric uow, IMusicRepository repository)
         {
+            _uow = uow;
             _repository = repository;
         }
 
         [Route(""), HttpGet]
         public IHttpActionResult GetAll()
         {
-            var musics = _repository.GetAll("select * from Musics");
+            var music = _repository.GetAll("SELECT * FROM MUSICS");
 
-            return Ok(musics);
+            _repository.Dispose();
+
+            return Ok(music);
         }
 
         [Route("track/{id:int}/musics"), HttpGet]
@@ -38,6 +44,44 @@ namespace WorldMusic.Api.V1.Controller
 
             return Ok(track);
         }
+
+        [Route("remove/{id:int}/inactive/{status:bool}/musics"), HttpGet]
+        public IHttpActionResult RemoveTrackById(int Id, bool status)
+        {
+
+            if (Id == 0) return NotFound();
+
+            var tran = _uow.BeginTransaction();
+
+            var err = 0;
+
+            var remove = false;
+
+            try
+            {
+                remove = _uow.MusicRepository.RemoveInactiveMusic(new { MusicId = Id, IsActive = status }, tran);
+
+                tran.Commit();
+            }
+            catch (System.Exception ex)
+            {
+                System.Diagnostics.Trace.WriteLine(ex.Message);
+
+                tran.Rollback();
+
+                err = 1;
+            }
+            finally
+            {
+                _uow.Dispose();
+            }
+
+            if (err > 0) return Content(HttpStatusCode.NotModified, "Erro ao tentar excluir registro.");
+
+            return Ok(remove);
+        }
+
+
 
         //[HttpPost, Route("")]
         //public void Post(Music music)

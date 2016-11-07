@@ -25,7 +25,7 @@ namespace WorldMusic.Infra.Dapper.UOW
 
         public void BeginTransaction()
         {
-            if (_transaction == null) _transaction = _context.ConnectionTransaction.BeginTransaction();
+            if (_transaction == null) _transaction = _context.Connection.BeginTransaction();
 
         }
 
@@ -45,7 +45,7 @@ namespace WorldMusic.Infra.Dapper.UOW
 
         public int Execute(string query, object param = null, CommandType commandType = CommandType.Text)
         {
-            return _context.ConnectionTransaction.Execute(query, param, _transaction, commandType: commandType);
+            return _context.Connection.Execute(query, param, _transaction, commandType: commandType);
         }
 
 
@@ -78,11 +78,12 @@ namespace WorldMusic.Infra.Dapper.UOW
                         _transaction = null;
                     }
 
-                    if (_context.ConnectionTransaction != null)
+                    if (_context.Connection != null)
                     {
-                        _context.ConnectionTransaction.Dispose();
+                        _context.Connection.Dispose();
+
                         Trace.WriteLine(">>>>>> [ CONEXÃO TRANSACIONAL SÍNCRONA !- E N C E R R A D A -! ]");
-                        Trace.WriteLine(_context.ConnectionTransaction.State, ">>>>>> State: {0}");
+                        Trace.WriteLine(_context.Connection.State, ">>>>>> State: {0}");
                     }
                 }
 

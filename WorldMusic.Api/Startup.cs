@@ -20,6 +20,8 @@ namespace WorldMusic.Api
 
                     await next.Invoke();
                 }
+
+                context.TraceOutput.WriteLine("CONTAINER FINALIZADO");
             });
 
             var config = new HttpConfiguration();

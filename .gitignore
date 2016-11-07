@@ -1,0 +1,6 @@
+#Visual Studio files
+
+obj/
+[Bb]in
+[Dd]ebug*/
+[Rr]elease*/

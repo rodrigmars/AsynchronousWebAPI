@@ -9,19 +9,19 @@ namespace WorldMusic.Infra.Dapper.DbContext
 {
     public class DapperDbContext : IDapperDbContext
     {
-        SqlConnection _dbConnection { get; set; }
+        SqlConnection _connection { get; set; }
+        private readonly string _connString;
+        bool _disposed { get; set; }
 
-
-        private readonly string _connection;
-
-        public DapperDbContext(string connection)
+        public DapperDbContext(string connString)
         {
-            _connection = connection;
+            _connString = connString;
+            _connection = new SqlConnection(_connString);
         }
 
         public async Task<T> ConnectionAsync<T>(Func<IDbConnection, Task<T>> getData)
         {
-            using (var connection = new SqlConnection(_connection))
+            using (var connection = new SqlConnection(_connString))
             {
                 await connection.OpenAsync();
 
@@ -36,9 +36,9 @@ namespace WorldMusic.Infra.Dapper.DbContext
 
         }
 
-        public T Connection<T>(Func<IDbConnection, T> getData)
+        public T Connection_<T>(Func<IDbConnection, T> getData)
         {
-            using (var connection = new SqlConnection(_connection))
+            using (var connection = new SqlConnection(_connString))
             {
                 connection.Open();
 
@@ -53,21 +53,26 @@ namespace WorldMusic.Infra.Dapper.DbContext
             }
         }
 
-        public IDbConnection ConnectionTransaction
+        public IDbConnection Connection
         {
             get
             {
-                if (_dbConnection == null)
-                {
-                    _dbConnection = new SqlConnection(_connection);
+                if (_disposed) return null;
 
-                    _dbConnection.Open();
+                if (_connection.State == ConnectionState.Closed)
+                { 
+                    _connection.Open();
 
-                    TraceDiagnostic(">>>>>> [ CONEXÃO TRANSACIONAL SÍNCRONA INICIADA. ]", _dbConnection);
+                    TraceDiagnostic(">>>>>> [ CONEXÃO SÍNCRONA INICIADA. ]", _connection);
                 }
 
-                return _dbConnection;
+                return _connection;
             }
+        }
+
+        public void Disposed(bool disposed)
+        {
+            _disposed = disposed;
         }
 
         void TraceDiagnostic(string log, SqlConnection conn)
