@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WorldMusic.Api.OAuth
 {
-    public class AuthorizationServerProviderDeloitte : OAuthAuthorizationServerProvider
+    public class AuthorizationServerProviderWorldMusic : OAuthAuthorizationServerProvider
     {
         
         public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)

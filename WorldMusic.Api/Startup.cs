@@ -88,7 +88,7 @@ namespace WorldMusic.Api
                 AccessTokenExpireTimeSpan = TimeSpan.FromHours(2),
                 
                 //ProviderDeloitte
-                Provider = new AuthorizationServerProviderDeloitte()
+                Provider = new AuthorizationServerProviderWorldMusic()
             };
 
             app.UseOAuthAuthorizationServer(OAuthServerOptions);

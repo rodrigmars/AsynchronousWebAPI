@@ -111,7 +111,7 @@
     <Compile Include="Controllers\V1\ListenersController.cs" />
     <Compile Include="Controllers\V1\MusicsController.cs" />
     <Compile Include="Jil\JilFormatter.cs" />
-    <Compile Include="OAuth\AuthorizationServerProviderDeloitte.cs" />
+    <Compile Include="OAuth\AuthorizationServerProviderWorldMusic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\Listener.cs" />
