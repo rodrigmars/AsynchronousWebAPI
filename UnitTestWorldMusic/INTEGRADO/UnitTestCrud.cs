@@ -7,7 +7,7 @@ using WorldMusic.Domain.Entities;
 using System.Threading;
 using System.Diagnostics;
 using System.Linq;
-using WorldMusic.Api.V1.Controller;
+using WorldMusic.Api.V1.Controllers;
 using System.Web.Http.Results;
 using SimpleInjector;
 using System.Configuration;

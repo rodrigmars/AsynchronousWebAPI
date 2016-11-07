@@ -5,7 +5,7 @@ using System.Web.Http;
 using WorldMusic.Domain.Entities;
 using WorldMusic.Domain.Interfaces.Repositories;
 
-namespace WorldMusic.Api.V1.Controller
+namespace WorldMusic.Api.V1.Controllers
 {
     [RoutePrefix("api/v1/musics")]
     public class MusicsController : ApiController
