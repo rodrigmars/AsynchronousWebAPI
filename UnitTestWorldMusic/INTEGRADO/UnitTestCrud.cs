@@ -176,6 +176,33 @@ namespace UnitTestWorldMusic.INTEGRADO
         }
 
         [TestMethod]
+        public void Testexecutapostmusic()
+        {
+            using (container.BeginExecutionContextScope())
+            {
+                var repoUOW = container.GetInstance<IUnitOfWorkGeneric>();
+                var repoMusic = container.GetInstance<IMusicRepository>();
+
+                var controller = new MusicsController(repoUOW, repoMusic);
+
+                var music = new Music
+                {
+                    Title = "Musica teste",
+                    Track = 252,
+                    IsActive = true,
+                    IDProcess = 15215
+                };
+
+                var actionResult = controller.Post(music);
+
+                var contentResult = actionResult as OkNegotiatedContentResult<bool>;
+
+                Assert.IsTrue(contentResult.Content);
+            }
+        }
+
+
+        [TestMethod]
         public void TestRemoveTrackById()
         {
             var tasks = new List<Task>();

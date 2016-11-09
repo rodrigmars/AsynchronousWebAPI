@@ -74,67 +74,27 @@ namespace WorldMusic.Infra.Dapper.Repositories
 
         public bool Add(string query, object param, CommandType command = CommandType.Text)
         {
-            return _context.Connection_(conn =>
-            {
-                using (var c = conn)
-                {
-                    return (c.Execute(query, param, commandType: command) > 0);
-                }
-            });
+            return _context.Connection.Execute(query, param, commandType: command) > 0;
         }
 
         public IEnumerable<TEntity> GetAll(string query, CommandType command = CommandType.Text)
         {
-
             return _context.Connection.Query<TEntity>(query, commandType: command);
-
-
-            //return _context.Connection(conn =>
-            //{
-            //    var obj = new List<TEntity>();
-            //    using (var c = conn)
-            //    {
-            //        obj.AddRange(c.Query<TEntity>(query, commandType: command));
-            //    }
-
-            //    System.Diagnostics.Trace.WriteLine(obj.Count, ">>>>>> Método GetAll() executado, total de registros = ");
-            //    System.Diagnostics.Trace.WriteLine(conn.State, ">>>>>> CONEXÃO STATE = ");
-
-            //    return obj;
-            //});
         }
 
         public TEntity GetById(string query, dynamic param, CommandType command = CommandType.Text)
         {
-            return _context.Connection_(conn =>
-            {
-                using (var c = conn)
-                {
-                    return c.Query<TEntity>(query).FirstOrDefault();
-                }
-            });
+            return _context.Connection.Query<TEntity>(query).FirstOrDefault();
         }
 
         public bool Update(string query, object param, CommandType command = CommandType.Text)
         {
-            return _context.Connection_(conn =>
-            {
-                using (var c = conn)
-                {
-                    return (c.Execute(query, param, commandType: command) > 0);
-                }
-            });
+            return _context.Connection.Execute(query, param, commandType: command) > 0;
         }
 
         public bool Remove(string query, object param, CommandType command = CommandType.Text)
         {
-            return _context.Connection_(conn =>
-            {
-                using (var c = conn)
-                {
-                    return (c.Execute(query, param, commandType: command) > 0);
-                }
-            });
+            return _context.Connection.Execute(query, param, commandType: command) > 0;
         }
 
         public void Dispose()
@@ -146,15 +106,7 @@ namespace WorldMusic.Infra.Dapper.Repositories
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    if (_context.Connection != null) _context.Connection.Dispose();
-                }
-
-                _context.Disposed(_disposed = true);
-            }
+            if (!_disposed) _context.Disposed(_disposed = true);
         }
 
         ~RepositoryBase()

@@ -18,7 +18,7 @@ namespace WorldMusic.Infra.Dapper.UOW
         }
 
         private IMusicRepository _musicRepository { get; set; }
-        //http://stackoverflow.com/questions/1649066/activator-createinstancet-vs-new
+        
         public IMusicRepository MusicRepository
         {
             get
@@ -46,11 +46,11 @@ namespace WorldMusic.Infra.Dapper.UOW
                         _transaction = null;
                     }
 
-                    if (_context.Connection != null)
-                    {
-                        //_connection.Close();
-                        _context.Connection.Dispose();
-                    }
+                    //if (_context.Connection != null)
+                    //{
+                    //    //_connection.Close();
+                    //    _context.Connection.Dispose();
+                    //}
                 }
 
                 _context.Disposed(_disposed = true);

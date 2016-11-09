@@ -51,7 +51,7 @@ namespace WorldMusic.Api.V1.Controllers
 
             if (Id == 0) return NotFound();
 
-            var tran = _uow.BeginTransaction();
+            var tran = _uow.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
 
             var err = 0;
 
@@ -81,13 +81,44 @@ namespace WorldMusic.Api.V1.Controllers
             return Ok(remove);
         }
 
+        [HttpPost, Route("")]
+        public IHttpActionResult Post(Music music)
+        {
 
+            if (music == null) return NotFound();
 
-        //[HttpPost, Route("")]
-        //public void Post(Music music)
-        //{
+            var tran = _uow.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
 
-        //}
+            var err = 0;
+
+            var add = false;
+
+            try
+            {
+                add = _uow.MusicRepository.Add(music, tran);
+
+                
+                
+                tran.Commit();
+            }
+            catch (System.Exception ex)
+            {
+                System.Diagnostics.Trace.WriteLine(ex.Message);
+
+                tran.Rollback();
+
+                err = 1;
+            }
+            finally
+            {
+                _uow.Dispose();
+            }
+
+            if (err > 0) return Content(HttpStatusCode.NotModified, "Erro ao tentar excluir registro.");
+
+            return Ok(add);
+
+        }
 
         //[HttpPut, Route("")]
         //public void Put(Music music)

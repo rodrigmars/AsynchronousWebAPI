@@ -11,6 +11,8 @@ namespace WorldMusic.Domain.Interfaces.Repositories
 
         bool AddMusicMusicByStyle(string query, object param = null, CommandType command = CommandType.Text);
 
+        bool Add(Music music, IDbTransaction tran = null, CommandType command = CommandType.Text);
+
         bool RemoveInactiveMusic(object param = null, IDbTransaction tran = null, CommandType command = CommandType.Text);
 
         void Dispose();

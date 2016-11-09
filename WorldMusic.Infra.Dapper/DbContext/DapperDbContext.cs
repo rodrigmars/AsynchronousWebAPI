@@ -16,7 +16,6 @@ namespace WorldMusic.Infra.Dapper.DbContext
         public DapperDbContext(string connString)
         {
             _connString = connString;
-            _connection = new SqlConnection(_connString);
         }
 
         public async Task<T> ConnectionAsync<T>(Func<IDbConnection, Task<T>> getData)
@@ -36,31 +35,14 @@ namespace WorldMusic.Infra.Dapper.DbContext
 
         }
 
-        public T Connection_<T>(Func<IDbConnection, T> getData)
-        {
-            using (var connection = new SqlConnection(_connString))
-            {
-                connection.Open();
-
-                TraceDiagnostic(">>>>>> [ CONNEXÃO SÍNCRONA INICIADA. ]", connection);
-
-                //Trace.WriteLine(">>>>>> [ CONNEXÃO SÍNCRONA INCIADA ]");
-                //Trace.WriteLine(connection.ClientConnectionId, ">>>>>> connection.ClientConnectionId: {0}");
-                //Trace.WriteLine(connection.ServerVersion, ">>>>>> ServerVersion: {0}");
-                //Trace.WriteLine(connection.State, ">>>>>> State: {0}");
-
-                return getData(connection);
-            }
-        }
-
         public IDbConnection Connection
         {
             get
             {
-                if (_disposed) return null;
+                if(_connection == null) _connection = new SqlConnection(_connString);
 
                 if (_connection.State == ConnectionState.Closed)
-                { 
+                {
                     _connection.Open();
 
                     TraceDiagnostic(">>>>>> [ CONEXÃO SÍNCRONA INICIADA. ]", _connection);
@@ -72,7 +54,7 @@ namespace WorldMusic.Infra.Dapper.DbContext
 
         public void Disposed(bool disposed)
         {
-            _disposed = disposed;
+            if (_connection.State == ConnectionState.Open) _connection.Dispose();          
         }
 
         void TraceDiagnostic(string log, SqlConnection conn)

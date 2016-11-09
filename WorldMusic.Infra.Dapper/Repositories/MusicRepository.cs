@@ -44,6 +44,17 @@ namespace WorldMusic.Infra.Dapper.Repositories
             return _context.Connection.Execute(query, music, transaction: tran, commandType: command) > 0;
         }
 
+        public bool Add(Music music, IDbTransaction tran = null, CommandType command = CommandType.Text) {
+
+            var query = @"INSERT INTO MUSICS VALUES(@Title
+                                   ,@Track
+                                   ,@IsActive
+                                   ,@IDProcess
+                                   ,GETDATE())";
+
+            return _context.Connection.Execute(query, music, transaction: tran, commandType: command) > 0;
+        }
+
         public bool UpdateMusicByBandOfMetal(Music music, CommandType command = CommandType.Text)
         {
             var query = @"UPDATE MUSICS SET TITLE = @Name, 
