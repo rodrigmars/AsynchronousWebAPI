@@ -15,6 +15,5 @@ namespace WorldMusic.Domain.Interfaces.Repositories
 
         bool RemoveInactiveMusic(object param = null, IDbTransaction tran = null, CommandType command = CommandType.Text);
 
-        void Dispose();
     }
 }

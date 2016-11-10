@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 
 namespace WorldMusic.Infra.Dapper.Interface
@@ -8,8 +9,11 @@ namespace WorldMusic.Infra.Dapper.Interface
     {
         Task<T> ConnectionAsync<T>(Func<IDbConnection, Task<T>> getData);
 
-        IDbConnection Connection { get; }
+        SqlConnection Connection { get; set; }
 
-        void Disposed(bool disposed);
+        void Closed();
+
+        void MonitoringConnection();
+
     }
 }

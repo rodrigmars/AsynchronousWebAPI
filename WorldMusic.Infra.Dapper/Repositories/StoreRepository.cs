@@ -6,9 +6,6 @@ namespace WorldMusic.Infra.Dapper.Repositories
 {
     public class StoreRepository : RepositoryBase<Store>, IStoreRepository
     {
-        public StoreRepository(IDapperDbContext context) : base(context)
-        {
-            _context = context;
-        }
+        public StoreRepository(IDapperDbContext context) : base(context) { }
     }
 }

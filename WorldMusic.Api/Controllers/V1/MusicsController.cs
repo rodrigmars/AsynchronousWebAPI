@@ -12,9 +12,9 @@ namespace WorldMusic.Api.V1.Controllers
     {
         private readonly IMusicRepository _repository;
 
-        private readonly IUnitOfWorkGeneric _uow;
+        private readonly IUnitOfWork _uow;
 
-        public MusicsController(IUnitOfWorkGeneric uow, IMusicRepository repository)
+        public MusicsController(IUnitOfWork uow, IMusicRepository repository)
         {
             _uow = uow;
             _repository = repository;
@@ -23,11 +23,26 @@ namespace WorldMusic.Api.V1.Controllers
         [Route(""), HttpGet]
         public IHttpActionResult GetAll()
         {
-            var music = _repository.GetAll("SELECT * FROM MUSICS");
+            try
+            {
+                var music = _repository.GetAll("SELECT * FROM MUSICS");
 
-            _repository.Dispose();
+                _repository.Close();
 
-            return Ok(music);
+                music = _repository.GetAll("SELECT * FROM MUSICS");
+
+                return Ok(music);
+
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+            finally {
+                
+                _repository.Close();
+            }
         }
 
         [Route("track/{id:int}/musics"), HttpGet]

@@ -26,6 +26,8 @@ namespace WorldMusic.Domain.Interfaces.Repositories
         bool Update(string query, object param, CommandType command = CommandType.Text);
 
         bool Remove(string query, object param, CommandType command = CommandType.Text);
+
+        void Close();
     }
 
 }

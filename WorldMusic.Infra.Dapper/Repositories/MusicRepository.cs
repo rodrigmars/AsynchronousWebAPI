@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -12,10 +11,7 @@ namespace WorldMusic.Infra.Dapper.Repositories
     public class MusicRepository : RepositoryBase<Music>, IMusicRepository
     {
 
-        public MusicRepository(IDapperDbContext context) : base(context)
-        {
-            _context = context;
-        }
+        public MusicRepository(IDapperDbContext context) : base(context) { }
 
         public IEnumerable<Music> GetAllInactiveTracks(string query, object param = null, CommandType command = CommandType.Text)
         {
@@ -67,21 +63,5 @@ namespace WorldMusic.Infra.Dapper.Repositories
                 Id = music.MusicId
             }, commandType: command) > 0;
         }
-
-        //protected virtual void Dispose(bool disposing)
-        //{
-        //    if (!_disposed)
-        //    {
-        //        //if (disposing) _context.Connection.Dispose();
-        //        if (disposing) _context.Dispose();
-        //    }
-        //    _disposed = true;
-        //}
-
-        //public void Dispose()
-        //{
-        //    Dispose(true);
-        //    GC.SuppressFinalize(this);
-        //}
     }
 }

@@ -1,32 +1,33 @@
-﻿using Dapper;
-using System;
+﻿using System;
 using System.Data;
-using System.Diagnostics;
 using WorldMusic.Domain.Interfaces.Repositories;
 using WorldMusic.Infra.Dapper.Interface;
+using WorldMusic.Infra.Dapper.Repositories;
 
 namespace WorldMusic.Infra.Dapper.UOW
 {
     public class UnitOfWork : IUnitOfWork
     {
+        readonly IDapperDbContext _context;
+        IDbTransaction _transaction { get; set; }
+        IMusicRepository _musicRepository { get; set; }
 
-        //http://www.kspace.pt/posts/UnitOfWork
-
-        private IDapperDbContext _context;
-
-        private IDbTransaction _transaction { get; set; }
-        private bool _disposed;
-
-    
-        public UnitOfWork(IDapperDbContext contex)
+        public UnitOfWork(IDapperDbContext context)
         {
-            _context = contex;
+            _context = context;
         }
 
-        public void BeginTransaction()
+        public IMusicRepository MusicRepository
         {
-            if (_transaction == null) _transaction = _context.Connection.BeginTransaction();
+            get
+            {
+                return _musicRepository ?? (_musicRepository = new MusicRepository(_context));
+            }
+        }
 
+        public IDbTransaction BeginTransaction(IsolationLevel IsolationLevel = IsolationLevel.ReadCommitted)
+        {
+            return _transaction ?? (_transaction = _context.Connection.BeginTransaction(IsolationLevel));
         }
 
         public void Commit()
@@ -39,34 +40,13 @@ namespace WorldMusic.Infra.Dapper.UOW
             if (_transaction != null)
             {
                 _transaction.Rollback();
-                _transaction = null;
+                //_transaction = null;
             }
         }
 
-        public int Execute(string query, object param = null, CommandType commandType = CommandType.Text)
-        {
-            return _context.Connection.Execute(query, param, _transaction, commandType: commandType);
-        }
+        bool _disposed { get; set; }
 
-
-        //public IEnumerable<T> Query<T>(string query, object param = null, CommandType commandType = CommandType.Text)
-        //{
-        //    return Connection.Query<T>(query, param, _transaction, commandType: commandType);
-        //}
-
-        //public IEnumerable<dynamic> Query(string query, object param = null, CommandType commandType = CommandType.Text)
-        //{
-        //    return Connection.Query(query, param, _transaction, commandType: commandType);
-        //}
-
-
-        public void Dispose()
-        {
-            dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)
             {
@@ -77,23 +57,16 @@ namespace WorldMusic.Infra.Dapper.UOW
                         _transaction.Dispose();
                         _transaction = null;
                     }
-
-                    if (_context.Connection != null)
-                    {
-                        _context.Connection.Dispose();
-
-                        Trace.WriteLine(">>>>>> [ CONEXÃO TRANSACIONAL SÍNCRONA !- E N C E R R A D A -! ]");
-                        Trace.WriteLine(_context.Connection.State, ">>>>>> State: {0}");
-                    }
                 }
-
-                _disposed = true;
+                //_context.Disposed(_disposed = true);
+                //_context.Dispose();
             }
         }
 
-        ~UnitOfWork()
+        public void Dispose()
         {
-            dispose(false);
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

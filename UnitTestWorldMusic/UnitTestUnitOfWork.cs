@@ -52,17 +52,17 @@ namespace UnitTestWorldMusic
                         try
                         {
                             sut.BeginTransaction();
-                            sut.Execute(@"INSERT INTO [Mercadorias].[dbo].[Musics](
-                                Title,
-                                Track,
-                                IsActive,
-                                IDProcess,
-                                [TimeStamp]) VALUES(
-                                            @Title,
-                                            @Track,
-                                            @IsActive,
-                                            @IDProcess,
-                                            GETDATE())", music);
+                            //sut.Execute(@"INSERT INTO [Mercadorias].[dbo].[Musics](
+                            //    Title,
+                            //    Track,
+                            //    IsActive,
+                            //    IDProcess,
+                            //    [TimeStamp]) VALUES(
+                            //                @Title,
+                            //                @Track,
+                            //                @IsActive,
+                            //                @IDProcess,
+                            //                GETDATE())", music);
 
                             //if (!music.IsActive) sut.Commit();
                             sut.Commit();

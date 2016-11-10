@@ -7,11 +7,13 @@ using WorldMusic.Infra.Dapper.Interface;
 
 namespace WorldMusic.Infra.Dapper.DbContext
 {
-    public class DapperDbContext : IDapperDbContext
+    public class DapperDbContext : IDisposable, IDapperDbContext
     {
-        SqlConnection _connection { get; set; }
+        private SqlConnection _connection;
+
         private readonly string _connString;
-        bool _disposed { get; set; }
+
+        bool disposed;
 
         public DapperDbContext(string connString)
         {
@@ -25,44 +27,93 @@ namespace WorldMusic.Infra.Dapper.DbContext
                 await connection.OpenAsync();
 
                 TraceDiagnostic(">>>>>> [ CONEXÃO ASSÍNCRONA INICIADA. ]", connection);
-                //Trace.WriteLine(">>>>>> [ CONEXÃO ASSÍNCRONA EM EXECUÇÃO ]");
-                //Trace.WriteLine(connection.ClientConnectionId, ">>>>>> connection.ClientConnectionId: {0}");
-                //Trace.WriteLine(connection.ServerVersion, ">>>>>> ServerVersion: {0}");
-                //Trace.WriteLine(connection.State, ">>>>>> State: {0}");
 
                 return await getData(connection);
             }
-
         }
 
-        public IDbConnection Connection
+        public SqlConnection Connection
         {
             get
             {
-                if(_connection == null) _connection = new SqlConnection(_connString);
+                if (_connection == null)
+                {
+                    _connection = new SqlConnection(_connString);
+
+                    OpenConnection();
+
+                    TraceDiagnostic(">>>>>> [**** INSTÂNCIA CRIADA E CONEXÃO ABERTA PARA SQL CONNECTION ****]", _connection);
+                }
 
                 if (_connection.State == ConnectionState.Closed)
                 {
-                    _connection.Open();
+                    OpenConnection();
 
-                    TraceDiagnostic(">>>>>> [ CONEXÃO SÍNCRONA INICIADA. ]", _connection);
+                    TraceDiagnostic(">>>>>> [ NOVA CONEXÃO ABERTA ]", _connection);
                 }
 
                 return _connection;
             }
+            set
+            {
+                _connection = value;
+            }
         }
 
-        public void Disposed(bool disposed)
+
+        void OpenConnection()
         {
-            if (_connection.State == ConnectionState.Open) _connection.Dispose();          
+            _connection.Open();
+        }
+
+        public void Closed()
+        {
+            if (_connection.State == ConnectionState.Open) _connection.Close();
+        }
+
+        /// <summary>
+        /// Monitora status CONNECTION
+        /// </summary>
+        public void MonitoringConnection()
+        {
+            TraceDiagnostic(">>>>>> MONITORANDO CONEXAO", _connection);
         }
 
         void TraceDiagnostic(string log, SqlConnection conn)
         {
             Trace.WriteLine(log);
             Trace.WriteLine(conn.ClientConnectionId, ">>>>>> connection.ClientConnectionId: {0}");
-            Trace.WriteLine(conn.ServerVersion, ">>>>>> ServerVersion: {0}");
+
+            if (conn.State == ConnectionState.Open) Trace.WriteLine(conn.ServerVersion, ">>>>>> ServerVersion: {0}");
+
             Trace.WriteLine(conn.State, ">>>>>> State: {0}");
         }
+
+        public void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    _connection.Dispose();
+
+                    TraceDiagnostic(">>>>>> DISPOSE REALIZADO PARA SQL CONNECTION ", _connection);
+                }
+
+                disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~DapperDbContext() // the finalizer
+        {
+            Dispose(false);
+        }
+
     }
 }

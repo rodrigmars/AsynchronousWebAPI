@@ -20,11 +20,9 @@ namespace WorldMusic.CrossCutting.IoC
 
             container.Register(typeof(IRepositoryBase<>), typeof(RepositoryBase<>), Lifestyle.Scoped);
 
-            container.Register<IUnitOfWork, UnitOfWork>(Lifestyle.Scoped);
-
             container.Register<IMusicRepository, MusicRepository>(Lifestyle.Scoped);
 
-            container.Register<IUnitOfWorkGeneric, UnitOfWorkGeneric>(Lifestyle.Scoped);
+            container.Register<IUnitOfWork, UnitOfWork>(Lifestyle.Scoped);
 
             
 

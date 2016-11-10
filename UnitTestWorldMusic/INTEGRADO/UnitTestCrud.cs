@@ -156,7 +156,7 @@ namespace UnitTestWorldMusic.INTEGRADO
                 {
                     using (container.BeginExecutionContextScope())
                     {
-                        var repoUOW = container.GetInstance<IUnitOfWorkGeneric>();
+                        var repoUOW = container.GetInstance<IUnitOfWork>();
                         var repoMusic = container.GetInstance<IMusicRepository>();
 
 
@@ -180,7 +180,7 @@ namespace UnitTestWorldMusic.INTEGRADO
         {
             using (container.BeginExecutionContextScope())
             {
-                var repoUOW = container.GetInstance<IUnitOfWorkGeneric>();
+                var repoUOW = container.GetInstance<IUnitOfWork>();
                 var repoMusic = container.GetInstance<IMusicRepository>();
 
                 var controller = new MusicsController(repoUOW, repoMusic);
@@ -203,6 +203,38 @@ namespace UnitTestWorldMusic.INTEGRADO
 
 
         [TestMethod]
+        public void TestConsultaTrackById()
+        {
+            var tasks = new List<Task>();
+
+            var numRequisitions = 15;
+
+            for (int i = 0; i < numRequisitions; i++)
+            {
+                tasks.Add(Task.Run(() =>
+                {
+                    
+                    using (var scope = container.BeginExecutionContextScope())
+                    {
+                        var repoUOW = scope.GetInstance<IUnitOfWork>();
+                        var repoMusic = scope.GetInstance<IMusicRepository>();
+
+                        var controller = new MusicsController(repoUOW, repoMusic);
+
+                        var actionResult = controller.GetAll();
+
+                        var contentResult = actionResult as OkNegotiatedContentResult<IEnumerable<Music>>;
+
+                        Assert.IsTrue(contentResult.Content.Count() > 0);
+                    }
+                }));
+            }
+
+            Task.WaitAll(tasks.ToArray());
+        }
+
+
+        [TestMethod]
         public void TestRemoveTrackById()
         {
             var tasks = new List<Task>();
@@ -215,7 +247,7 @@ namespace UnitTestWorldMusic.INTEGRADO
                 {
                     using (container.BeginExecutionContextScope())
                     {
-                        var repoUOW = container.GetInstance<IUnitOfWorkGeneric>();
+                        var repoUOW = container.GetInstance<IUnitOfWork>();
                         var repoMusic = container.GetInstance<IMusicRepository>();
 
                         var controller = new MusicsController(repoUOW, repoMusic);

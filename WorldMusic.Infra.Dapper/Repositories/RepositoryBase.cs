@@ -1,24 +1,28 @@
 ﻿using Dapper;
-using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using WorldMusic.Domain.Interfaces.Repositories;
 using WorldMusic.Infra.Dapper.Interface;
 
-
-//reference: https://github.com/whisperdancer/AspNet.Identity.Dapper/blob/master/AspNet.Identity.Dapper/DbManager.cs
-
 namespace WorldMusic.Infra.Dapper.Repositories
 {
-    public class RepositoryBase<TEntity> : IDisposable, IRepositoryBase<TEntity> where TEntity : class
+    public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : class
     {
         protected IDapperDbContext _context;
 
         public RepositoryBase(IDapperDbContext context)
         {
             _context = context;
+        }
+
+        public void Close()
+        {
+            _context.Closed();
+
+            _context.MonitoringConnection();
         }
 
         public async Task<bool> AddAsync(string query, object param)
@@ -95,23 +99,6 @@ namespace WorldMusic.Infra.Dapper.Repositories
         public bool Remove(string query, object param, CommandType command = CommandType.Text)
         {
             return _context.Connection.Execute(query, param, commandType: command) > 0;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(true);
-        }
-        private bool _disposed;
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposed) _context.Disposed(_disposed = true);
-        }
-
-        ~RepositoryBase()
-        {
-            Dispose(false);
         }
     }
 }
